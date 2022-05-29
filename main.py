@@ -13,6 +13,7 @@ import os
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ['SECRET_KEY']  # covered environment variables
+# rekdkf;jfgas
 ckeditor = CKEditor(app)
 Bootstrap(app)
 gravatar = Gravatar(app,
