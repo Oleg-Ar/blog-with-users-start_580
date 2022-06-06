@@ -11,6 +11,7 @@ from flask_gravatar import Gravatar
 from functools import wraps
 import os
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')  # covered environment variables
 
@@ -28,7 +29,13 @@ gravatar = Gravatar(app,
 ##CONNECT TO DB
 # use "DATABASE_URL" environment variable if provided, but if it's None (e.g. when running locally)
 # then we can provide sqlite:///blog.db as the alternative.
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL", "sqlite:///blog.db")
+
+
+uri = os.getenv("DATABASE_URL")  # or other relevant config var
+if uri.startswith("postgres://"):
+    uri = uri.replace("postgres://", "postgresql://", 1)
+# rest of connection code using the connection string `uri`
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(uri, "sqlite:///blog.db")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
